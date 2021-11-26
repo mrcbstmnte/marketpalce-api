@@ -1,0 +1,46 @@
+{
+  "name": "marketpalce-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon -r dotenv/config server.js",
+    "dev": "nodemon -r dotenv/config server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrcbstmnte/marketpalce-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrcbstmnte/marketpalce-api/issues"
+  },
+  "homepage": "https://github.com/mrcbstmnte/marketpalce-api#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "module-alias": "^2.2.2",
+    "mongodb": "3.6",
+    "mongoose": "^6.0.13"
+  },
+  "devDependencies": {
+    "eslint": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.1",
+    "jest": "^27.0.4",
+    "nodemon": "^2.0.15"
+  },
+  "_moduleAliases": {
+    "@": "./",
+    "@lib": "./lib",
+    "@config": "./config.js",
+    "@resources": "./resources",
+    "@models": "./src/db/models/index.js",
+    "@routes": "./src/routes"
+  }
+}
