@@ -84,6 +84,35 @@ describe('Carts Model', () => {
     })
   })
 
+  describe('#productExists', () => {
+    beforeEach(async () => {
+      await collection.insertMany([
+        {
+          _id: new ObjectId(userId),
+          products: [
+            {
+              id: productId,
+              sellerId,
+              quantity: 5
+            }
+          ],
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ])
+    })
+
+    it('should check if the product already exists in the cart', async () => {
+      let exists = await model.productExists(userId, productId)
+
+      expect(exists).toEqual(true)
+
+      exists = await model.productExists(userId, anotherProductId)
+
+      expect(exists).toEqual(false)
+    })
+  })
+
   describe('#addProducts', () => {
     beforeEach(async () => {
       await collection.insertMany([
