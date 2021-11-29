@@ -25,6 +25,10 @@ exports.Orders = {
             type: 'objectId',
             description: 'Seller Id'
           },
+          name: {
+            type: 'string',
+            description: 'Product name'
+          },
           quantity: {
             type: 'number',
             description: 'Number of products to be ordered'
