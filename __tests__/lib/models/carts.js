@@ -243,6 +243,15 @@ describe('Carts Model', () => {
       expect(cart.products).toStrictEqual([])
       expect(cart.updatedAt.valueOf()).toBeGreaterThan(cart.createdAt.valueOf())
     })
+
+    it('should return `null` if the products to remove does not exist', async () => {
+      const cart = await model.removeProducts(userId, [
+        new ObjectId().toString(),
+        new ObjectId().toString()
+      ])
+
+      expect(cart).toStrictEqual(null)
+    })
   })
 
   describe('#updateQuantity', () => {
