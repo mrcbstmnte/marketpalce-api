@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --runInBand",
-    "start": "nodemon -r module-alias/register -r dotenv/config server.js",
+    "start": "node -r module-alias/register -r dotenv/config server.js",
     "dev": "nodemon -r module-alias/register -r dotenv/config server.js"
   },
   "repository": {
