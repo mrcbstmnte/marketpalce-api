@@ -11,3 +11,16 @@ exports.createMockServer = function (router) {
 
   return app
 }
+
+exports.getConfig = function () {
+  return {
+    service: {
+      port: 3004
+    },
+
+    mongodb: {
+      databaseName: 'test',
+      connectUri: 'mongodb://localhost:27017'
+    }
+  }
+}
