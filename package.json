@@ -1,8 +1,8 @@
 {
   "name": "marketpalce-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Simple Marketplace API",
+  "main": "server.js",
   "scripts": {
     "test": "jest --runInBand",
     "start": "nodemon -r module-alias/register -r dotenv/config server.js",
