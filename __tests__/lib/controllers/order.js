@@ -7,6 +7,7 @@ const {
 
 const OrdersModel = require('@models/orders')
 const CartsModel = require('@models/carts')
+const ProductsModel = require('@models/products')
 const Controller = require('@lib/controllers/order')
 
 const {
@@ -15,6 +16,7 @@ const {
 
 jest.mock('@models/orders')
 jest.mock('@models/carts')
+jest.mock('@models/products')
 
 describe('Order Controller', () => {
   /**
@@ -47,6 +49,9 @@ describe('Order Controller', () => {
       }),
       cartsModel: new CartsModel(mongoClient, {
         database: 'test'
+      }),
+      productsModel: new ProductsModel(mongoClient, {
+        database: 'test'
       })
     })
   })
@@ -60,6 +65,10 @@ describe('Order Controller', () => {
       expect(controller.cartsModel).toBeInstanceOf(CartsModel)
     })
 
+    it('should have an instance of products model', () => {
+      expect(controller.productsModel).toBeInstanceOf(ProductsModel)
+    })
+
     it('should throw an error if orders model is not provided', () => {
       expect(() => {
         return new Controller()
@@ -69,7 +78,20 @@ describe('Order Controller', () => {
     it('should throw an error if carts model is not provided', () => {
       expect(() => {
         return new Controller({
-          productsModel: new OrdersModel(mongoClient, {
+          ordersModel: new OrdersModel(mongoClient, {
+            database: 'test'
+          })
+        })
+      }).toThrow()
+    })
+
+    it('should throw an error if products model is not provided', () => {
+      expect(() => {
+        return new Controller({
+          ordersModel: new OrdersModel(mongoClient, {
+            database: 'test'
+          }),
+          cartsModel: new CartsModel(mongoClient, {
             database: 'test'
           })
         })
@@ -101,6 +123,13 @@ describe('Order Controller', () => {
           userId: new ObjectId(userId),
           products
         })
+
+      controller.productsModel
+        .getById
+        .mockResolvedValue({
+          _id: new ObjectId(productId),
+          stock: 17
+        })
     })
 
     it('should create an order based from the cart', async () => {
@@ -109,8 +138,23 @@ describe('Order Controller', () => {
       expect(controller.cartsModel.getById).toHaveBeenCalledTimes(1)
       expect(controller.cartsModel.getById).toHaveBeenCalledWith(userId)
 
+      expect(controller.productsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.productsModel.getById).toHaveBeenCalledWith(productId, sellerId)
+
       expect(controller.ordersModel.create).toHaveBeenCalledTimes(1)
       expect(controller.ordersModel.create).toHaveBeenCalledWith(userId, products)
+
+      expect(controller.productsModel.update).toHaveBeenCalledTimes(1)
+      expect(controller.productsModel.update).toHaveBeenCalledWith(
+        productId,
+        sellerId,
+        {
+          stock: 12
+        }
+      )
+
+      expect(controller.cartsModel.emptyCart).toHaveBeenCalledTimes(1)
+      expect(controller.cartsModel.emptyCart).toHaveBeenCalledWith(userId)
     })
 
     it('should throw a NotFoundError when the cart was not found', async () => {
@@ -123,7 +167,9 @@ describe('Order Controller', () => {
       }).rejects.toThrow(NotFoundError)
 
       expect(controller.cartsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.productsModel.getById).toHaveBeenCalledTimes(0)
       expect(controller.ordersModel.create).toHaveBeenCalledTimes(0)
+      expect(controller.productsModel.update).toHaveBeenCalledTimes(0)
     })
 
     it('should throw a BusinessLogicError if the cart is empty', async () => {
@@ -139,6 +185,23 @@ describe('Order Controller', () => {
 
       expect(controller.cartsModel.getById).toHaveBeenCalledTimes(1)
       expect(controller.ordersModel.create).toHaveBeenCalledTimes(0)
+      expect(controller.productsModel.getById).toHaveBeenCalledTimes(0)
+      expect(controller.productsModel.update).toHaveBeenCalledTimes(0)
+    })
+
+    it('should throw an error if the product was not found', async () => {
+      controller.productsModel
+        .getById
+        .mockResolvedValue(null)
+
+      await expect(async () => {
+        await controller.create(userId)
+      }).rejects.toThrow(NotFoundError)
+
+      expect(controller.cartsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.productsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.ordersModel.create).toHaveBeenCalledTimes(0)
+      expect(controller.productsModel.update).toHaveBeenCalledTimes(0)
     })
   })
 

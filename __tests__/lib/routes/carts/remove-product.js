@@ -45,9 +45,7 @@ describe('Cart remove product route', () => {
     req = {
       body: {
         userId: 'userId',
-        productIds: [
-          'productId'
-        ]
+        productId: 'productId'
       }
     }
   })

@@ -294,4 +294,34 @@ describe('Carts Model', () => {
       expect(cart.updatedAt.valueOf()).toBeGreaterThan(cart.createdAt.valueOf())
     })
   })
+
+  describe('#emptyCart', () => {
+    beforeEach(async () => {
+      await collection.insertMany([
+        {
+          _id: new ObjectId(userId),
+          products: [
+            {
+              id: productId,
+              sellerId,
+              quantity: 5,
+              addedAt: new Date()
+            }
+          ],
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ])
+    })
+
+    it('should empty the cart', async () => {
+      await model.emptyCart(userId)
+
+      const cart = await model.collection.findOne({
+        _id: new ObjectId(userId)
+      })
+
+      expect(cart.products).toStrictEqual([])
+    })
+  })
 })
