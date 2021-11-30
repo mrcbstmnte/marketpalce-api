@@ -166,12 +166,13 @@ describe('Service', () => {
         service
       )
 
-      expect(service.app.use).toHaveBeenCalledTimes(2)
+      expect(service.app.use).toHaveBeenCalledTimes(3)
       expect(service.app.use).toHaveBeenNthCalledWith(1, expect.any(Function))
       expect(service.app.use).toHaveBeenNthCalledWith(
         2,
         service.router
       )
+      expect(service.app.use).toHaveBeenNthCalledWith(3, expect.any(Function))
     })
   })
 
