@@ -8,7 +8,7 @@ const {
 const CartsModel = require('@models/carts')
 const ProductsModel = require('@models/products')
 const Controller = require('@lib/controllers/cart')
-const { NotFoundError } = require('@/lib/errors')
+const { NotFoundError, BusinessLogicError } = require('@/lib/errors')
 
 jest.mock('@models/carts')
 jest.mock('@models/products')
@@ -113,7 +113,7 @@ describe('Cart Controller', () => {
         .getById
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.get(userId)
       }).rejects.toThrow(NotFoundError)
 
@@ -123,9 +123,14 @@ describe('Cart Controller', () => {
 
   describe('#addProduct', () => {
     beforeEach(() => {
-      controller.cartsModel
-        .addProducts
-        .mockResolvedValue()
+      controller.productsModel
+        .getById
+        .mockResolvedValue({
+          _id: new ObjectId(productId),
+          sellerId: new ObjectId(sellerId),
+          name: 'Battery',
+          stock: 5
+        })
 
       jest.spyOn(controller, 'get')
         .mockResolvedValue({
@@ -143,6 +148,9 @@ describe('Cart Controller', () => {
 
       expect(controller.get).toHaveBeenCalledTimes(1)
       expect(controller.get).toHaveBeenCalledWith(userId)
+
+      expect(controller.productsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.productsModel.getById).toHaveBeenCalledWith(productId, sellerId)
 
       expect(controller.cartsModel.addProducts).toHaveBeenCalledTimes(1)
       expect(controller.cartsModel.addProducts).toHaveBeenCalledWith(
@@ -179,6 +187,7 @@ describe('Cart Controller', () => {
       })
 
       expect(controller.get).toHaveBeenCalledTimes(1)
+      expect(controller.productsModel.getById).toHaveBeenCalledTimes(1)
       expect(controller.cartsModel.addProducts).toHaveBeenCalledTimes(0)
 
       expect(controller.cartsModel.updateQuantity).toHaveBeenCalledTimes(1)
@@ -189,6 +198,49 @@ describe('Cart Controller', () => {
           quantity: 10
         }
       )
+    })
+
+    it('should throw a BusinessLogicError if the product\'s stock is low', async () => {
+      controller.productsModel
+        .getById
+        .mockResolvedValue({
+          _id: new ObjectId(productId),
+          sellerId: new ObjectId(sellerId),
+          name: 'Battery',
+          stock: 3
+        })
+
+      await expect(async () => {
+        await controller.addProduct(userId, {
+          id: productId,
+          sellerId,
+          quantity: 5
+        })
+      }).rejects.toThrow(BusinessLogicError)
+
+      expect(controller.get).toHaveBeenCalledTimes(1)
+      expect(controller.productsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.cartsModel.addProducts).toHaveBeenCalledTimes(0)
+      expect(controller.cartsModel.updateQuantity).toHaveBeenCalledTimes(0)
+    })
+
+    it('should throw a NotFoundError if the product was not found', async () => {
+      controller.productsModel
+        .getById
+        .mockResolvedValue(null)
+
+      await expect(async () => {
+        await controller.addProduct(userId, {
+          id: productId,
+          sellerId,
+          quantity: 5
+        })
+      }).rejects.toThrow(NotFoundError)
+
+      expect(controller.get).toHaveBeenCalledTimes(1)
+      expect(controller.productsModel.getById).toHaveBeenCalledTimes(1)
+      expect(controller.cartsModel.addProducts).toHaveBeenCalledTimes(0)
+      expect(controller.cartsModel.updateQuantity).toHaveBeenCalledTimes(0)
     })
   })
 
@@ -212,7 +264,7 @@ describe('Cart Controller', () => {
         .removeProducts
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.removeProduct(userId, [
           productId
         ])

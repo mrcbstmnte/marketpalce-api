@@ -130,7 +130,7 @@ describe('Product Controller', () => {
         .getById
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.create(sellerId, {
           name: 'Battery',
           stock: 5
@@ -188,7 +188,7 @@ describe('Product Controller', () => {
         .getById
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.get(productId, sellerId)
       }).rejects.toThrow(NotFoundError)
 
@@ -277,7 +277,7 @@ describe('Product Controller', () => {
         .update
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.update(productId, sellerId, {
           name: 'Super Battery'
         })
@@ -303,7 +303,7 @@ describe('Product Controller', () => {
         .delete
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.delete(productId, sellerId)
       }).rejects.toThrow(NotFoundError)
 

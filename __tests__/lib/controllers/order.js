@@ -110,7 +110,7 @@ describe('Order Controller', () => {
         .getById
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.create(userId)
       }).rejects.toThrow(NotFoundError)
 
@@ -125,7 +125,7 @@ describe('Order Controller', () => {
           products: []
         })
 
-      expect(async () => {
+      await expect(async () => {
         await controller.create(userId)
       }).rejects.toThrow(BusinessLogicError)
 
@@ -177,7 +177,7 @@ describe('Order Controller', () => {
         .getById
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.get(orderId, userId)
       }).rejects.toThrow(NotFoundError)
 

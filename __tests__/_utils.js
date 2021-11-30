@@ -5,8 +5,9 @@ const bodyParser = require('body-parser')
 
 exports.createMockServer = function (router) {
   const app = express()
+
   app.use(bodyParser.json())
-  app.use('/api', router)
+  app.use(router)
 
   return app
 }

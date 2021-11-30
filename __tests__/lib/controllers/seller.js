@@ -122,7 +122,7 @@ describe('Seller Controller', () => {
         .getById
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.get(sellerId)
       }).rejects.toThrow(NotFoundError)
 
@@ -198,7 +198,7 @@ describe('Seller Controller', () => {
         .update
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.update(sellerId, {
           name: 'Seller 3'
         })
@@ -221,7 +221,7 @@ describe('Seller Controller', () => {
         .delete
         .mockResolvedValue(null)
 
-      expect(async () => {
+      await expect(async () => {
         await controller.delete(sellerId)
       }).rejects.toThrow(NotFoundError)
 
