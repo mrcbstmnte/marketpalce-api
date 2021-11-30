@@ -93,6 +93,14 @@ describe('Order Controller', () => {
           _id: new ObjectId(userId),
           products
         })
+
+      controller.ordersModel
+        .create
+        .mockResolvedValue({
+          _id: new ObjectId(orderId),
+          userId: new ObjectId(userId),
+          products
+        })
     })
 
     it('should create an order based from the cart', async () => {
