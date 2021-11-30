@@ -25,7 +25,8 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/node_modules/',
     '<rootDir>/__tests__/_.*\\.js',
-    '<rootDir>/__tests__/.eslintrc.js'
+    '<rootDir>/__tests__/.eslintrc.js',
+    '<rootDir>/__tests__/test-files/*'
   ],
 
   setupFiles: ['<rootDir>/__tests__/_env.js']
