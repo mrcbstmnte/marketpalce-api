@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand",
-    "start": "nodemon -r dotenv/config server.js",
-    "dev": "nodemon -r dotenv/config server.js"
+    "start": "node -r module-alias/register -r dotenv/config server.js",
+    "dev": "nodemon -r module-alias/register -r dotenv/config server.js"
   },
   "repository": {
     "type": "git",
@@ -39,7 +39,7 @@
   },
   "_moduleAliases": {
     "@": "./",
-    "@lib": "./lib",
+    "@lib": "./lib/",
     "@config": "./config.js",
     "@models": "./lib/models",
     "@routes": "./lib/routes"
