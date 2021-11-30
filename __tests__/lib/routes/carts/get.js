@@ -26,7 +26,9 @@ describe('Cart get route', () => {
   beforeAll(() => {
     const router = express.Router()
     const context = {
-      cartController: new CartController()
+      controllers: {
+        cart: new CartController()
+      }
     }
 
     route = new Route(router, context)

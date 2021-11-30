@@ -25,7 +25,9 @@ describe('User create route', () => {
   beforeAll(() => {
     const router = express.Router()
     const context = {
-      userController: new UserController()
+      controllers: {
+        user: new UserController()
+      }
     }
 
     route = new Route(router, context)

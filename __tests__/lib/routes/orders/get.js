@@ -26,7 +26,9 @@ describe('Order get route', () => {
   beforeAll(() => {
     const router = express.Router()
     const context = {
-      orderController: new OrderController()
+      controllers: {
+        order: new OrderController()
+      }
     }
 
     route = new Route(router, context)

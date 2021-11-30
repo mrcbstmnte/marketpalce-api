@@ -24,7 +24,9 @@ describe('Seller list route', () => {
   beforeAll(() => {
     const router = express.Router()
     const context = {
-      sellerController: new SellerController()
+      controllers: {
+        seller: new SellerController()
+      }
     }
 
     route = new Route(router, context)

@@ -78,45 +78,45 @@ describe('Service', () => {
 
     describe('models', () => {
       it('should have an instance of carts model', () => {
-        expect(service.models.cartsModel).toBeInstanceOf(CartsModel)
+        expect(service.models.carts).toBeInstanceOf(CartsModel)
       })
 
       it('should have an instance of orders model', () => {
-        expect(service.models.ordersModel).toBeInstanceOf(OrdersModel)
+        expect(service.models.orders).toBeInstanceOf(OrdersModel)
       })
 
       it('should have an instance of products model', () => {
-        expect(service.models.productsModel).toBeInstanceOf(ProductsModel)
+        expect(service.models.products).toBeInstanceOf(ProductsModel)
       })
 
       it('should have an instance of sellers model', () => {
-        expect(service.models.sellersModel).toBeInstanceOf(SellersModel)
+        expect(service.models.sellers).toBeInstanceOf(SellersModel)
       })
 
       it('should have an instance of users model', () => {
-        expect(service.models.usersModel).toBeInstanceOf(UsersModel)
+        expect(service.models.users).toBeInstanceOf(UsersModel)
       })
     })
 
     describe('controllers', () => {
       it('should have an instance of cart controller', () => {
-        expect(service.controllers.cartController).toBeInstanceOf(CartController)
+        expect(service.controllers.cart).toBeInstanceOf(CartController)
       })
 
       it('should have an instance of order controller', () => {
-        expect(service.controllers.orderController).toBeInstanceOf(OrderController)
+        expect(service.controllers.order).toBeInstanceOf(OrderController)
       })
 
       it('should have an instance of product controller', () => {
-        expect(service.controllers.productController).toBeInstanceOf(ProductController)
+        expect(service.controllers.product).toBeInstanceOf(ProductController)
       })
 
       it('should have an instance of seller controller', () => {
-        expect(service.controllers.sellerController).toBeInstanceOf(SellerController)
+        expect(service.controllers.seller).toBeInstanceOf(SellerController)
       })
 
       it('should have an instance of user controller', () => {
-        expect(service.controllers.userController).toBeInstanceOf(UserController)
+        expect(service.controllers.user).toBeInstanceOf(UserController)
       })
     })
   })
