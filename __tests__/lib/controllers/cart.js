@@ -159,6 +159,7 @@ describe('Cart Controller', () => {
           {
             id: productId,
             sellerId,
+            name: 'Battery',
             quantity: 5
           }
         ]
